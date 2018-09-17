@@ -1,29 +1,44 @@
 require 'nokogiri'
 require 'open-uri'
 
-def get_verse(url)
+def get_verse(book, chapter)
+	url = "http://www.kingjamesbibleonline.org/#{book}-Chapter-#{chapter}"
 	puts "#{Time.now}, downloading #{url}"
 	file = open(url)
 	contents = file.read
 	puts "#{Time.now}, downloaded #{url}"
-	sups = Nokogiri::HTML(contents).css(".versehover")
-	puts sups[0].parent.parent.text
-	puts "#{Time.now}, parsed #{url}"
-
-	sups.each do
-		|sup|
-		puts sup.parent.parent.text
-		@file.puts(sup.parent.parent.text)
+	document = Nokogiri::HTML(contents)
+	puts document.css("span.chapter").text.upcase
+	puts "chapter #{chapter}".upcase
+	if document.css("span.chapter").text.upcase != "chapter #{chapter}".upcase then
+		return false
 	end
+
+	@file.puts "#{book} chapter #{chapter}".upcase
+	@file.puts
+
+	verses = document.css(".versehover")
+
+	verses.each do
+		|verse|
+		puts verse.parent.parent.text
+		@file.puts(verse.parent.parent.text)
+	end
+
+	@file.puts
+
+	return true
 end
 
 @file = File.open("bible.txt", 'w')
 
-(1..31).each do
-	|index|
-	get_verse("http://www.kingjamesbibleonline.org/Genesis-Chapter-#{index}")
+chapter = 0
+while true do
+	chapter = chapter + 1 
+	break if not get_verse("Genesis", chapter) 
 end
 
+=begin
 (1..28).each do
 	|index|
 	get_verse("http://www.kingjamesbibleonline.org/Matthew-Chapter-#{index}")
@@ -48,5 +63,5 @@ end
 	|index|
 	get_verse("http://www.kingjamesbibleonline.org/John-Chapter-#{index}")
 end
-
+=end
 @file.close()
