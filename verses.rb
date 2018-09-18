@@ -14,29 +14,34 @@ def get_verse(book, chapter)
 		return false
 	end
 
-	@file.puts "#{book} chapter #{chapter}".upcase
-	@file.puts
+	File.open("verses\\#{book}_#{chapter}.txt", 'w') do
+		|file|
+		file.puts "#{book} chapter #{chapter}".upcase
+		file.puts
 
-	verses = document.css(".versehover")
+		document.css(".versehover").each do
+			|verse|
+			puts verse.parent.parent.text
+			file.puts(verse.parent.parent.text)
+		end
 
-	verses.each do
-		|verse|
-		puts verse.parent.parent.text
-		@file.puts(verse.parent.parent.text)
+		file.puts
 	end
-
-	@file.puts
 
 	return true
 end
 
-@file = File.open("bible.txt", 'w')
-
-chapter = 0
-while true do
-	chapter = chapter + 1 
-	break if not get_verse("Genesis", chapter) 
+def get_book(book)
+	chapter = 0
+	while true do
+		chapter = chapter + 1 
+		break if not get_verse(book, chapter) 
+	end
 end
+
+Dir.mkdir("verses") if not Dir.exist?("verses")
+#get_book("Genesis")
+get_book("Exodus")
 
 =begin
 (1..28).each do
@@ -64,4 +69,4 @@ end
 	get_verse("http://www.kingjamesbibleonline.org/John-Chapter-#{index}")
 end
 =end
-@file.close()
+
