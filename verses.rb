@@ -50,31 +50,3 @@ downloader = VerseDownloader.new(Dir.pwd)
 #downloader.get_book("Genesis")
 #downloader.get_book("Exodus")
 downloader.get_book("Leviticus")
-
-=begin
-(1..28).each do
-	|index|
-	get_verse("http://www.kingjamesbibleonline.org/Matthew-Chapter-#{index}")
-end
-
-(1..28).each do
-	|index|
-	get_verse("http://www.kingjamesbibleonline.org/Matthew-Chapter-#{index}")
-end
-
-(1..16).each do
-	|index|
-	get_verse("http://www.kingjamesbibleonline.org/Mark-Chapter-#{index}")
-end
-
-(1..24).each do
-	|index|
-	get_verse("http://www.kingjamesbibleonline.org/Luke-Chapter-#{index}")
-end
-
-(1..21).each do
-	|index|
-	get_verse("http://www.kingjamesbibleonline.org/John-Chapter-#{index}")
-end
-=end
-
